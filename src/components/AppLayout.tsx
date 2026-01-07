@@ -220,12 +220,12 @@ export default function AppLayout() {
           </button>
 
           {/* Scroll Indicator */}
-          <button
+          {/* <button
             onClick={() => scrollToSection('our-story')}
             className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 hover:text-white transition-colors animate-bounce"
           >
             <ChevronDown className="w-8 h-8" />
-          </button>
+          </button> */}
         </div>
 
         {/* Decorative Elements */}
@@ -384,7 +384,7 @@ export default function AppLayout() {
               <div className="space-y-4 text-center">
                 <div className="flex items-center justify-center gap-2 text-gray-600">
                   <Calendar className="w-5 h-5 text-rose-400" />
-                  <span>June 15, 2026</span>
+                  <span>May 30, 2026</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-gray-600">
                   <Clock className="w-5 h-5 text-rose-400" />
@@ -411,7 +411,7 @@ export default function AppLayout() {
               <div className="space-y-4 text-center">
                 <div className="flex items-center justify-center gap-2 text-gray-600">
                   <Calendar className="w-5 h-5 text-rose-400" />
-                  <span>June 15, 2026</span>
+                  <span>May 30, 2026</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-gray-600">
                   <Clock className="w-5 h-5 text-rose-400" />
@@ -470,8 +470,8 @@ export default function AppLayout() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <Heart className="w-10 h-10 text-rose-400 fill-rose-400 mx-auto mb-4" />
-            <h3 className="font-serif text-3xl mb-2">Maria & James</h3>
-            <p className="text-gray-400 mb-8">June 15, 2026</p>
+            <h3 className="font-serif text-3xl mb-2">April Jean & Macdenver</h3>
+            <p className="text-gray-400 mb-8">May 30, 2026</p>
             
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-8">
               <button onClick={() => scrollToSection('home')} className="text-gray-400 hover:text-white transition-colors">Home</button>
@@ -486,7 +486,7 @@ export default function AppLayout() {
               Made with love for our special day
             </p>
             <p className="text-gray-600 text-xs mt-2">
-              © 2026 Maria & James Wedding
+              © 2026 April Jean & Macdenver Wedding
             </p>
           </div>
         </div>

@@ -89,7 +89,7 @@ export default function AppLayout() {
             {/* Logo */}
             <div className="flex items-center gap-2">
               <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
-              <span className="font-serif text-xl text-gray-800">M & J</span>
+              <span className="font-serif text-xl text-gray-800">AJ & M</span>
             </div>
 
             {/* Desktop Navigation */}
@@ -197,11 +197,11 @@ export default function AppLayout() {
             We're Getting Married
           </p>
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-6">
-            Maria & James
+            April Jean & Macdenver
           </h1>
           <div className="flex items-center justify-center gap-4 text-white/90 text-lg md:text-xl">
             <Calendar className="w-5 h-5" />
-            <span>June 15, 2026</span>
+            <span>May 30, 2026</span>
           </div>
           <div className="flex items-center justify-center gap-4 text-white/80 mt-2">
             <MapPin className="w-4 h-4" />

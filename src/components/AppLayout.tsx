@@ -7,6 +7,7 @@ import PhotoGallery from './PhotoGallery';
 import CountdownTimer from './CountdownTimer';
 import RSVPForm from './RSVPForm';
 import RSVPAdmin from './RSVPAdmin';
+import AdminLogin from './AdminLogin';
 
 // Prenup photos data
 const prenupPhotos = [
@@ -39,6 +40,7 @@ export default function AppLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
   // Fetch guest photos from Supabase
   const fetchGuestPhotos = async () => {
@@ -112,7 +114,7 @@ export default function AppLayout() {
             {/* Action Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button
-                onClick={() => setShowAdminModal(true)}
+                onClick={() => { setShowAdminModal(true); setIsAdminAuthenticated(false); }}
                 className="p-2 rounded-full text-gray-500 hover:bg-gray-100 transition-colors"
                 title="Admin Panel"
               >
@@ -157,6 +159,7 @@ export default function AppLayout() {
               <button
                 onClick={() => {
                   setShowAdminModal(true);
+                  setIsAdminAuthenticated(false);
                   setIsMenuOpen(false);
                 }}
                 className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium flex items-center justify-center gap-2"
@@ -514,7 +517,14 @@ export default function AppLayout() {
 
       {/* Admin Modal */}
       {showAdminModal && (
-        <RSVPAdmin onClose={() => setShowAdminModal(false)} />
+        !isAdminAuthenticated ? (
+          <AdminLogin
+            onClose={() => setShowAdminModal(false)}
+            onSuccess={() => setIsAdminAuthenticated(true)}
+          />
+        ) : (
+          <RSVPAdmin onClose={() => { setShowAdminModal(false); setIsAdminAuthenticated(false); }} />
+        )
       )}
     </div>
   );

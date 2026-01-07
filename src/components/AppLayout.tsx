@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Heart, Calendar, MapPin, Clock, Camera, Upload, ChevronDown, Menu, X, Settings } from 'lucide-react';
+import { Heart, Calendar, MapPin, Clock, Camera, Upload, ChevronDown, Menu, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import PhotoCarousel from './PhotoCarousel';
 import PhotoUpload from './PhotoUpload';
@@ -64,6 +64,21 @@ export default function AppLayout() {
     fetchGuestPhotos();
   }, []);
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      const key = e.key?.toLowerCase();
+      const trigger = (e.ctrlKey || e.metaKey) && e.altKey && key === 'a';
+      if (trigger) {
+        e.preventDefault();
+        setShowAdminModal(true);
+        setIsAdminAuthenticated(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
@@ -114,13 +129,6 @@ export default function AppLayout() {
             {/* Action Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button
-                onClick={() => { setShowAdminModal(true); setIsAdminAuthenticated(false); }}
-                className="p-2 rounded-full text-gray-500 hover:bg-gray-100 transition-colors"
-                title="Admin Panel"
-              >
-                <Settings className="w-5 h-5" />
-              </button>
-              <button
                 onClick={() => setShowUploadModal(true)}
                 className="px-5 py-2 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-sm font-medium hover:from-rose-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
               >
@@ -156,17 +164,7 @@ export default function AppLayout() {
                   {item.label}
                 </button>
               ))}
-              <button
-                onClick={() => {
-                  setShowAdminModal(true);
-                  setIsAdminAuthenticated(false);
-                  setIsMenuOpen(false);
-                }}
-                className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium flex items-center justify-center gap-2"
-              >
-                <Settings className="w-4 h-4" />
-                Admin Panel
-              </button>
+              {/* Admin Panel hidden — use Ctrl/⌘ + Alt + A to open */}
               <button
                 onClick={() => {
                   setShowUploadModal(true);

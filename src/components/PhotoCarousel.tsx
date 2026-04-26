@@ -119,23 +119,6 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
             <ChevronRight className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </button>
 
-          {/* Action Buttons */}
-          <div className="absolute top-4 right-4 flex gap-2">
-            <button
-              onClick={() => handleDownload(photos[currentIndex].url, `wedding-photo-${currentIndex + 1}.jpg`)}
-              className="p-2 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/40 transition-all duration-300"
-              aria-label="Download photo"
-            >
-              <Download className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setIsFullscreen(true)}
-              className="p-2 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/40 transition-all duration-300"
-              aria-label="View fullscreen"
-            >
-              <Maximize2 className="w-5 h-5" />
-            </button>
-          </div>
 
           {/* Slide Counter */}
           <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm">
@@ -211,15 +194,6 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
             <ChevronRight className="w-8 h-8" />
           </button>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            <button
-              onClick={() => handleDownload(photos[currentIndex].url, `wedding-photo-${currentIndex + 1}.jpg`)}
-              className="px-4 py-2 rounded-full bg-white/20 text-white hover:bg-white/40 transition-all flex items-center gap-2"
-            >
-              <Download className="w-5 h-5" />
-              Download
-            </button>
-          </div>
         </div>
       )}
     </>

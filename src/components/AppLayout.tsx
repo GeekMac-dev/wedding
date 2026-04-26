@@ -15,19 +15,19 @@ import EnvelopeSplash from './EnvelopeSplash';
 
 // Prenup photos data
 const prenupPhotos = [
-  { id: '1', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746625848_17d12f1e.png', caption: 'The beginning of forever' },
-  { id: '2', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746642730_bfb34c01.jpg', caption: 'Love in every glance' },
-  { id: '3', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746642650_fdad9f6b.jpg', caption: 'Two hearts, one love' },
-  { id: '4', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746650168_498167c8.png', caption: 'Together is our favorite place' },
-  { id: '5', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746649514_c4bb9322.png', caption: 'Written in the stars' },
-  { id: '6', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746646028_771943ca.jpg', caption: 'A love story for the ages' },
-  { id: '7', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746651206_f51c17c9.png', caption: 'Forever starts now' },
-  { id: '8', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746671931_8d9193dd.png', caption: 'My heart found its home' },
-  { id: '9', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746670014_af750d11.jpg', caption: 'Love beyond words' },
-  { id: '10', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746680454_6da814a9.png', caption: 'Our beautiful journey' },
-  { id: '11', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746669599_7f18435e.jpg', caption: 'Endless love' },
-  { id: '12', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746678918_cb102212.png', caption: 'Soulmates forever' },
-  { id: '13', url: 'https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746676939_6e0a949f.png', caption: 'Our happily ever after' },
+  { id: '1', url: '/images/prenup/JCM_1391.jpg', caption: 'The beginning of forever' },
+  { id: '2', url: '/images/prenup/JCM_1504.jpg', caption: 'Love in every glance' },
+  { id: '3', url: '/images/prenup/JCM_1670.jpg', caption: 'Two hearts, one love' },
+  { id: '4', url: '/images/prenup/JCM_1808.jpg', caption: 'Together is our favorite place' },
+  { id: '5', url: '/images/prenup/JCM_2125.jpg', caption: 'Written in the stars' },
+  { id: '6', url: '/images/prenup/JCM_2127.jpg', caption: 'A love story for the ages' },
+  { id: '7', url: '/images/prenup/JCM_2178.jpg', caption: 'Forever starts now' },
+  { id: '8', url: '/images/prenup/JCM_2249.jpg', caption: 'My heart found its home' },
+  { id: '9', url: '/images/prenup/JCM_2258.jpg', caption: 'Love beyond words' },
+  { id: '10', url: '/images/prenup/JCM_2467.jpg', caption: 'Our beautiful journey' },
+  { id: '11', url: '/images/prenup/JCM_2504.jpg', caption: 'Endless love' },
+  { id: '12', url: '/images/prenup/JCM_2508.jpg', caption: 'Soulmates forever' },
+  { id: '13', url: '/images/prenup/JCM_2600.jpg', caption: 'Our happily ever after' },
 ];
 
 interface GuestPhoto {
@@ -144,16 +144,6 @@ export default function AppLayout() {
               ))}
             </div>
 
-            {/* Action Buttons */}
-            <div className="hidden md:flex items-center gap-3">
-              <button
-                onClick={() => setShowUploadModal(true)}
-                className="px-5 py-2 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-500 text-white text-sm font-medium hover:from-yellow-600 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
-              >
-                <Upload className="w-4 h-4" />
-                Upload Photos
-              </button>
-            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -183,16 +173,6 @@ export default function AppLayout() {
                 </button>
               ))}
               {/* Admin Panel hidden — use Ctrl/⌘ + Alt + A to open */}
-              <button
-                onClick={() => {
-                  setShowUploadModal(true);
-                  setIsMenuOpen(false);
-                }}
-                className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-yellow-500 to-yellow-500 text-white text-sm font-medium flex items-center justify-center gap-2"
-              >
-                <Upload className="w-4 h-4" />
-                Upload Photos
-              </button>
             </div>
           </div>
         )}

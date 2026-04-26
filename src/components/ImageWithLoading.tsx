@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 interface ImageWithLoadingProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   containerClassName?: string;
+  priority?: boolean;
 }
 
 export default function ImageWithLoading({ 
@@ -9,14 +10,17 @@ export default function ImageWithLoading({
   alt, 
   className, 
   containerClassName = "",
+  priority = false,
   ...props 
 }: ImageWithLoadingProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(priority);
   const [error, setError] = useState(false);
   const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (priority) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -24,7 +28,7 @@ export default function ImageWithLoading({
           observer.disconnect();
         }
       },
-      { rootMargin: '200px' } // Load a bit early
+      { rootMargin: '600px' } // Load significantly earlier to prevent flickering
     );
 
     if (imgRef.current) {
@@ -41,7 +45,7 @@ export default function ImageWithLoading({
     >
       {!isLoaded && !error && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-amber-200 border-t-amber-500 rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-yellow-200 border-t-yellow-500 rounded-full animate-spin" />
         </div>
       )}
       
@@ -49,13 +53,13 @@ export default function ImageWithLoading({
         <img
           src={src}
           alt={alt}
-          className={`${className} transition-opacity duration-500 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`${className} transition-opacity duration-700 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{ willChange: 'opacity' }}
           onLoad={() => setIsLoaded(true)}
           onError={() => {
             setIsLoaded(true);
             setError(true);
           }}
-          loading="lazy"
           decoding="async"
           {...props}
         />

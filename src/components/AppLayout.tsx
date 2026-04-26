@@ -9,6 +9,7 @@ import RSVPForm from './RSVPForm';
 import RSVPAdmin from './RSVPAdmin';
 import AdminLogin from './AdminLogin';
 import ImageWithLoading from './ImageWithLoading';
+import EnvelopeSplash from './EnvelopeSplash';
 
 
 
@@ -44,6 +45,19 @@ export default function AppLayout() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
+
+  // Disable scroll when splash is visible
+  useEffect(() => {
+    if (!hasOpened) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [hasOpened]);
 
   // Fetch guest photos from Supabase
   const fetchGuestPhotos = async () => {
@@ -101,14 +115,15 @@ export default function AppLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-amber-50/30">
+    <div className={`min-h-screen bg-yellow-50/30 ${!hasOpened ? 'h-screen overflow-hidden' : ''}`}>
+      {!hasOpened && <EnvelopeSplash onOpen={() => setHasOpened(true)} />}
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-md shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <Heart className="w-6 h-6 text-amber-500 fill-amber-500" />
+              <Heart className="w-6 h-6 text-yellow-500 fill-yellow-500" />
               <span className="font-serif text-xl text-gray-800">AJ & M</span>
             </div>
 
@@ -120,8 +135,8 @@ export default function AppLayout() {
                   onClick={() => scrollToSection(item.id)}
                   className={`text-sm font-medium transition-colors ${
                     activeSection === item.id
-                      ? 'text-amber-500'
-                      : 'text-gray-600 hover:text-amber-500'
+                      ? 'text-yellow-500'
+                      : 'text-gray-600 hover:text-yellow-500'
                   }`}
                 >
                   {item.label}
@@ -133,7 +148,7 @@ export default function AppLayout() {
             <div className="hidden md:flex items-center gap-3">
               <button
                 onClick={() => setShowUploadModal(true)}
-                className="px-5 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-sm font-medium hover:from-amber-600 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                className="px-5 py-2 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-500 text-white text-sm font-medium hover:from-yellow-600 hover:to-yellow-600 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
               >
                 <Upload className="w-4 h-4" />
                 Upload Photos
@@ -160,7 +175,7 @@ export default function AppLayout() {
                   onClick={() => scrollToSection(item.id)}
                   className={`block w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     activeSection === item.id
-                      ? 'bg-amber-50 text-amber-500'
+                      ? 'bg-yellow-50 text-yellow-500'
                       : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
@@ -173,7 +188,7 @@ export default function AppLayout() {
                   setShowUploadModal(true);
                   setIsMenuOpen(false);
                 }}
-                className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-sm font-medium flex items-center justify-center gap-2"
+                className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-yellow-500 to-yellow-500 text-white text-sm font-medium flex items-center justify-center gap-2"
               >
                 <Upload className="w-4 h-4" />
                 Upload Photos
@@ -188,139 +203,147 @@ export default function AppLayout() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <ImageWithLoading
-            src="https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746625848_17d12f1e.png"
+            src="/images/hero.jpg"
+            priority={true}
             alt="Prenup Photo"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/70" />
         </div>
 
         {/* Content */}
-        <div className="relative z-10 text-center px-4">
-          <p className="text-white/90 text-lg md:text-xl font-light tracking-widest uppercase mb-4 animate-fade-in">
-            We're Getting Married
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-20 pb-32 md:pb-24">
+          <p className="text-yellow-200/90 text-sm md:text-base font-light tracking-[0.4em] uppercase mb-6 animate-fade-in">
+            ✦ We're Getting Married ✦
           </p>
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-6">
-            April Jean & Macdenver
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-4 drop-shadow-lg leading-tight">
+            April Jean
+            <span className="block text-yellow-300 text-4xl md:text-5xl lg:text-6xl font-light italic my-2">&amp;</span>
+            Macdenver
           </h1>
-          <div className="flex items-center justify-center gap-4 text-white/90 text-lg md:text-xl">
-            <Calendar className="w-5 h-5" />
-            <span>May 30, 2026</span>
+          <div className="flex items-center justify-center gap-6 text-white/90 mt-6 mb-2">
+            <div className="h-px w-12 bg-yellow-300/60" />
+            <div className="flex items-center gap-2 text-base md:text-lg">
+              <Calendar className="w-4 h-4 text-yellow-300" />
+              <span>May 30, 2026</span>
+            </div>
+            <div className="h-px w-12 bg-yellow-300/60" />
           </div>
-          <div className="flex items-center justify-center gap-4 text-white/80 mt-2">
-            <MapPin className="w-4 h-4" />
+          <div className="flex items-center justify-center gap-2 text-white/70 text-sm mb-8">
+            <MapPin className="w-3.5 h-3.5 text-yellow-300" />
             <span>Nasugbu, Batangas</span>
           </div>
 
-          {/* Countdown - Dynamic */}
+          {/* Countdown */}
           <CountdownTimer targetDate="2026-05-30T08:30:00" />
 
-          {/* CTA Button */}
-          <button
-            onClick={() => scrollToSection('rsvp')}
-            className="mt-8 px-8 py-4 rounded-full bg-white text-amber-600 font-medium hover:bg-amber-50 transition-all shadow-lg hover:shadow-xl"
-          >
-            RSVP Now
-          </button>
-
-          {/* Scroll Indicator */}
-          {/* <button
-            onClick={() => scrollToSection('our-story')}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 hover:text-white transition-colors animate-bounce"
-          >
-            <ChevronDown className="w-8 h-8" />
-          </button> */}
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+            <button
+              onClick={() => scrollToSection('rsvp')}
+              className="px-8 py-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 font-semibold hover:from-yellow-300 hover:to-yellow-400 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+            >
+              RSVP Now
+            </button>
+            <button
+              onClick={() => scrollToSection('our-story')}
+              className="px-8 py-4 rounded-full bg-white/15 border border-white/30 text-white font-medium hover:bg-white/25 backdrop-blur-sm transition-all"
+            >
+              Our Story
+            </button>
+          </div>
         </div>
 
-        {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-amber-300/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-yellow-300/20 rounded-full blur-3xl" />
+        {/* Floating animated scroll indicator */}
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none">
+          <div className="flex flex-col items-center gap-2 animate-bounce-slow">
+            <div className="w-6 h-10 rounded-full border-2 border-white/50 flex items-start justify-center pt-1.5">
+              <div className="w-1 h-2 rounded-full bg-white/70 animate-scroll-dot" />
+            </div>
+            <svg className="w-4 h-4 text-white/50 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
       </section>
 
       {/* Our Story Section */}
-      <section id="our-story" className="py-20 md:py-32 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="our-story" className="py-20 md:py-32 bg-white relative overflow-hidden">
+        {/* Background flourish */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-50 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-yellow-50 rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <p className="text-amber-500 font-medium tracking-widest uppercase mb-2">Our Journey</p>
+            <p className="text-yellow-500 font-semibold tracking-[0.3em] uppercase text-xs mb-3">Our Journey Together</p>
             <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-4">Our Love Story</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-400 mx-auto rounded-full" />
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-px w-16 bg-yellow-300" />
+              <Heart className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+              <div className="h-px w-16 bg-yellow-300" />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-3xl -z-10" />
               <ImageWithLoading
-                src="https://d64gsuwffb70l.cloudfront.net/695dabdd5473eeaae1c08a56_1767746642730_bfb34c01.jpg"
+                src="/images/story.jpg"
                 alt="Our Story"
-                className="rounded-2xl shadow-2xl"
+                className="rounded-2xl shadow-2xl w-full"
               />
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-amber-100 rounded-2xl -z-10" />
+              {/* Floating date badge */}
+              <div className="absolute -bottom-5 -right-5 bg-gradient-to-br from-yellow-400 to-yellow-500 text-yellow-900 rounded-2xl p-4 shadow-xl">
+                <p className="font-serif text-xl font-bold leading-none">May 30</p>
+                <p className="text-xs font-semibold tracking-wider mt-1">2026</p>
+              </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-amber-500" />
+            <div className="space-y-8">
+              {/* Timeline item */}
+              {[
+                {
+                  icon: <Heart className="w-5 h-5 text-yellow-600" />,
+                  title: 'How We Met',
+                  text: `Our paths first crossed in 2017 during the school intramurals where we became friends. Years passed and life went on, but we eventually found our way back to each other. It all started again with a simple Facebook message about some grapes—and a small conversation that turned into something deeper. From shy chats to unwavering support, we've grown from a distant memory into a beautiful, lasting reality.`,
+                },
+                {
+                  icon: <Calendar className="w-5 h-5 text-yellow-600" />,
+                  title: 'The First Date',
+                  text: `Our first date was at Lasema, a Korean sauna. At the time, I was about to go back to Cebu for work, so it felt like time was slipping away. But in that quiet space, we talked, laughed, and forgot everything else for a while. That day became the start of something special—turning what could have been a goodbye into the beginning of our story.`,
+                },
+                {
+                  icon: <svg className="w-5 h-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>,
+                  title: 'The Proposal',
+                  text: `On November 8, during a simple breakfast together, Macdenver found the perfect moment to ask April Jean to spend forever with him. As we sat on the floor, Korean-style, I nervously hid the ring under the table, my heart racing as I reached for it. But the moment I saw her smile, everything else faded—it melted my heart. And with that, our journey to forever truly began.`,
+                },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-5 group">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-yellow-100 group-hover:bg-yellow-200 transition-colors flex items-center justify-center shadow-sm">
+                    {item.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-serif text-xl text-gray-800 mb-1.5">{item.title}</h3>
+                    <p className="text-gray-500 leading-relaxed text-sm">{item.text}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-serif text-xl text-gray-800 mb-2">How We Met</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Our paths first crossed in 2017 during the school intramurals where we became friends. 
-                    Years passed and life went on, but we eventually found our way back to each other. 
-                    It all started again with a simple Facebook message about some grapes—and a small 
-                    conversation that turned into something deeper. From shy chats to unwavering support, 
-                    we've grown from a distant memory into a beautiful, lasting reality.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-amber-500" />
-                </div>
-                <div>
-                  <h3 className="font-serif text-xl text-gray-800 mb-2">The First Date</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Our first date was at Lasema, a Korean sauna. At the time, I was about to go back to 
-                    Cebu for work, so it felt like time was slipping away. But in that quiet space, 
-                    we talked, laughed, and forgot everything else for a while. That day became the start 
-                    of something special—turning what could have been a goodbye into the beginning of our story. 
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
-                  <svg className="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-serif text-xl text-gray-800 mb-2">The Proposal</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    On November 8, during a simple breakfast together, Macdenver found the perfect 
-                    moment to ask April Jean to spend forever with him. As we sat on the floor, 
-                    Korean-style, I nervously hid the ring under the table, my heart racing as I reached for it. 
-                    But the moment I saw her smile, everything else faded—it melted my heart. 
-                    And with that, our journey to forever truly began.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* Prenup Photos Section */}
-      <section id="prenup" className="py-20 md:py-32 bg-gradient-to-b from-amber-50 to-white">
+      <section id="prenup" className="py-20 md:py-32 bg-gradient-to-b from-yellow-50 to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <p className="text-amber-500 font-medium tracking-widest uppercase mb-2">Captured Moments</p>
+            <p className="text-yellow-500 font-medium tracking-widest uppercase mb-2">Captured Moments</p>
             <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-4">Our Prenup Photos</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               A collection of our most cherished moments captured during our prenuptial photoshoot. 
               Each photo tells a story of our love.
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-400 mx-auto rounded-full mt-4" />
+            <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 mx-auto rounded-full mt-4" />
           </div>
 
           <PhotoCarousel photos={prenupPhotos} autoPlay={true} interval={5000} />
@@ -331,17 +354,17 @@ export default function AppLayout() {
       <section id="gallery" className="py-20 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-amber-500 font-medium tracking-widest uppercase mb-2">Share Your Memories</p>
+            <p className="text-yellow-500 font-medium tracking-widest uppercase mb-2">Share Your Memories</p>
             <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-4">Guest Photo Gallery</h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-6">
               Help us capture every moment! Upload your photos from our celebration 
               and browse memories shared by other guests.
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-400 mx-auto rounded-full mb-8" />
+            <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 mx-auto rounded-full mb-8" />
             
             <button
               onClick={() => setShowUploadModal(true)}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-medium hover:from-amber-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-500 text-white font-medium hover:from-yellow-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl"
             >
               <Camera className="w-5 h-5" />
               Upload Your Photos
@@ -356,16 +379,16 @@ export default function AppLayout() {
       </section>
 
       {/* RSVP Section */}
-      <section id="rsvp" className="py-20 md:py-32 bg-gradient-to-b from-amber-50 to-white">
+      <section id="rsvp" className="py-20 md:py-32 bg-gradient-to-b from-yellow-50 to-white">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-amber-500 font-medium tracking-widest uppercase mb-2">Be Our Guest</p>
+            <p className="text-yellow-500 font-medium tracking-widest uppercase mb-2">Be Our Guest</p>
             <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-4">RSVP</h2>
             <p className="text-gray-600 max-w-xl mx-auto">
               We would be honored to have you celebrate our special day with us. 
               Please let us know if you can attend by filling out the form below.
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-400 mx-auto rounded-full mt-4" />
+            <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 mx-auto rounded-full mt-4" />
           </div>
 
           <RSVPForm />
@@ -373,94 +396,137 @@ export default function AppLayout() {
       </section>
 
       {/* Wedding Details Section */}
-      <section id="details" className="py-20 md:py-32 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="details" className="py-20 md:py-32 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-50 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-64 h-64 bg-yellow-50 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <p className="text-amber-500 font-medium tracking-widest uppercase mb-2">Join Us</p>
+            <p className="text-yellow-500 font-semibold tracking-[0.3em] uppercase text-xs mb-3">Join Us</p>
             <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mb-4">Wedding Details</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-400 mx-auto rounded-full" />
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-px w-16 bg-yellow-300" />
+              <Heart className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+              <div className="h-px w-16 bg-yellow-300" />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Ceremony Card */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow border border-amber-100">
-              <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="relative bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-xl p-10 border border-yellow-100 overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-100/50 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+              <div className="w-16 h-16 rounded-2xl bg-yellow-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-200 transition-colors">
+                <svg className="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
-              <h3 className="font-serif text-2xl text-gray-800 text-center mb-4">The Ceremony</h3>
-              <div className="space-y-4 text-center">
-                <div className="flex items-center justify-center gap-2 text-gray-600">
-                  <Calendar className="w-5 h-5 text-amber-400" />
-                  <span>May 30, 2026</span>
+              <h3 className="font-serif text-2xl text-gray-800 text-center mb-6">The Ceremony</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Date</p>
+                    <p className="font-medium text-gray-700">May 30, 2026</p>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center gap-2 text-gray-600">
-                  <Clock className="w-5 h-5 text-amber-400" />
-                  <span>8:30 AM</span>
+                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Time</p>
+                    <p className="font-medium text-gray-700">8:30 AM</p>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center gap-2 text-gray-600">
-                  <MapPin className="w-5 h-5 text-amber-400" />
-                  <span>St. Francis Xavier Parish</span>
+                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Venue</p>
+                    <p className="font-medium text-gray-700">St. Francis Xavier Parish</p>
+                    <p className="text-sm text-gray-400">Nasugbu, Batangas</p>
+                  </div>
                 </div>
-                <p className="text-gray-500 text-sm mt-4">
-                  Nasugbu, Batangas
-                </p>
               </div>
             </div>
 
             {/* Reception Card */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow border border-amber-100">
-              <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="relative bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-xl p-10 border border-yellow-100 overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-100/50 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+              <div className="w-16 h-16 rounded-2xl bg-yellow-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-200 transition-colors">
+                <svg className="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
                 </svg>
               </div>
-              <h3 className="font-serif text-2xl text-gray-800 text-center mb-4">The Reception</h3>
-              <div className="space-y-4 text-center">
-                <div className="flex items-center justify-center gap-2 text-gray-600">
-                  <Calendar className="w-5 h-5 text-amber-400" />
-                  <span>May 30, 2026</span>
+              <h3 className="font-serif text-2xl text-gray-800 text-center mb-6">The Reception</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Date</p>
+                    <p className="font-medium text-gray-700">May 30, 2026</p>
+                  </div>
                 </div>
-
-                <div className="flex items-center justify-center gap-2 text-gray-600">
-                  <MapPin className="w-5 h-5 text-amber-400" />
-                  <span>Brides Residence</span>
+                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Venue</p>
+                    <p className="font-medium text-gray-700">Brides Residence</p>
+                    <p className="text-sm text-gray-400">El Paso, Brgy. Lumbangan, Nasugbu, Batangas</p>
+                  </div>
                 </div>
-                <p className="text-gray-500 text-sm mt-4">
-                  El Paso, Barangay Lumbangan, Nasugbu, Batangas
-                </p>
               </div>
             </div>
           </div>
-
-
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="relative overflow-hidden text-white py-20"
+        style={{ background: 'linear-gradient(135deg, #1c1a14 0%, #2d2712 50%, #1c1a14 100%)' }}
+      >
+        {/* Decorative circles */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-yellow-400/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-20 w-40 h-40 bg-yellow-300/5 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
-            <Heart className="w-10 h-10 text-amber-400 fill-amber-400 mx-auto mb-4" />
-            <h3 className="font-serif text-3xl mb-2">April Jean & Macdenver</h3>
-            <p className="text-gray-400 mb-8">May 30, 2026</p>
-            
-            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-8">
-              <button onClick={() => scrollToSection('home')} className="text-gray-400 hover:text-white transition-colors">Home</button>
-              <button onClick={() => scrollToSection('our-story')} className="text-gray-400 hover:text-white transition-colors">Our Story</button>
-              <button onClick={() => scrollToSection('prenup')} className="text-gray-400 hover:text-white transition-colors">Photos</button>
-              <button onClick={() => scrollToSection('gallery')} className="text-gray-400 hover:text-white transition-colors">Gallery</button>
-              <button onClick={() => scrollToSection('rsvp')} className="text-gray-400 hover:text-white transition-colors">RSVP</button>
-              <button onClick={() => scrollToSection('details')} className="text-gray-400 hover:text-white transition-colors">Details</button>
+            {/* Monogram */}
+            <div className="w-16 h-16 rounded-full bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center mx-auto mb-6">
+              <Heart className="w-7 h-7 text-yellow-400 fill-yellow-400/40" />
             </div>
 
-            <p className="text-gray-500 text-sm">
-              Made with love for our special day
-            </p>
-            <p className="text-gray-600 text-xs mt-2">
-              © 2026 April Jean & Macdenver Wedding
-            </p>
+            <h3 className="font-serif text-4xl mb-1 text-white">April Jean</h3>
+            <p className="font-serif text-2xl text-yellow-400 italic mb-1">&amp; Macdenver</p>
+            <p className="text-gray-400 text-sm tracking-widest uppercase mb-10">May 30, 2026 · Nasugbu, Batangas</p>
+
+            <div className="flex flex-wrap items-center justify-center gap-1 mb-10">
+              {['Home','Our Story','Photos','Gallery','RSVP','Details'].map((label, i) => {
+                const ids = ['home','our-story','prenup','gallery','rsvp','details'];
+                return (
+                  <button
+                    key={label}
+                    onClick={() => scrollToSection(ids[i])}
+                    className="px-4 py-2 text-sm text-gray-400 hover:text-yellow-300 hover:bg-white/5 rounded-lg transition-all"
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="h-px bg-gradient-to-r from-transparent via-yellow-400/30 to-transparent mb-8" />
+
+            <p className="text-gray-500 text-sm">Made with <span className="text-yellow-400">♥</span> for our special day</p>
+            <p className="text-gray-600 text-xs mt-2">© 2026 April Jean &amp; Macdenver Wedding</p>
           </div>
         </div>
       </footer>

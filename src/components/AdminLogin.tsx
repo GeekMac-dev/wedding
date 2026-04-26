@@ -59,7 +59,7 @@ export default function AdminLogin({ onClose, onSuccess }: AdminLoginProps) {
           {error && <p className="text-sm text-red-600">{error}</p>}
 
           <div className="flex gap-2">
-            <button type="submit" className="flex-1 px-4 py-2 rounded-lg bg-amber-500 text-white">Sign in</button>
+            <button type="submit" className="flex-1 px-4 py-2 rounded-lg bg-yellow-500 text-white">Sign in</button>
             {/* <button
               type="button"
               onClick={fillDefault}

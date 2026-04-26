@@ -62,8 +62,8 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
 
   if (photos.length === 0) {
     return (
-      <div className="flex items-center justify-center h-96 bg-amber-50 rounded-2xl">
-        <p className="text-amber-400 text-lg">No photos yet</p>
+      <div className="flex items-center justify-center h-96 bg-yellow-50 rounded-2xl">
+        <p className="text-yellow-400 text-lg">No photos yet</p>
       </div>
     );
   }
@@ -151,7 +151,7 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
               onClick={() => goToSlide(index)}
               className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden transition-all duration-300 ${
                 index === currentIndex
-                  ? 'ring-2 ring-amber-500 ring-offset-2 scale-105'
+                  ? 'ring-2 ring-yellow-500 ring-offset-2 scale-105'
                   : 'opacity-60 hover:opacity-100'
               }`}
             >

@@ -83,8 +83,8 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
   if (photos.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-amber-100 flex items-center justify-center">
-          <svg className="w-12 h-12 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-yellow-100 flex items-center justify-center">
+          <svg className="w-12 h-12 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
@@ -108,7 +108,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
             }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               isSelectionMode
-                ? 'bg-amber-100 text-amber-600'
+                ? 'bg-yellow-100 text-yellow-600'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
@@ -127,7 +127,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
               {selectedForDownload.size > 0 && (
                 <button
                   onClick={handleBulkDownload}
-                  className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 transition-all flex items-center gap-2"
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-yellow-500 to-yellow-500 text-white hover:from-yellow-600 hover:to-yellow-600 transition-all flex items-center gap-2"
                 >
                   <Download className="w-4 h-4" />
                   Download ({selectedForDownload.size})
@@ -155,7 +155,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
             {/* Hover Overlay */}
             <div className={`absolute inset-0 transition-opacity duration-300 ${
               isSelectionMode && selectedForDownload.has(photo.id)
-                ? 'bg-amber-500/30'
+                ? 'bg-yellow-500/30'
                 : 'bg-black/0 group-hover:bg-black/30'
             }`} />
 

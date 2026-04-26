@@ -90,7 +90,7 @@ export default function RSVPForm() {
               message: '',
             });
           }}
-          className="mt-6 px-6 py-2 text-amber-500 hover:text-amber-600 font-medium transition-colors"
+          className="mt-6 px-6 py-2 text-yellow-500 hover:text-yellow-600 font-medium transition-colors"
         >
           Submit Another RSVP
         </button>
@@ -121,7 +121,7 @@ export default function RSVPForm() {
             onClick={() => handleAttendingChange(true)}
             className={`p-4 rounded-xl border-2 transition-all ${
               formData.attending
-                ? 'border-amber-500 bg-amber-50 text-amber-700'
+                ? 'border-yellow-500 bg-yellow-50 text-yellow-700'
                 : 'border-gray-200 hover:border-gray-300 text-gray-600'
             }`}
           >
@@ -158,7 +158,7 @@ export default function RSVPForm() {
             value={formData.guestName}
             onChange={handleInputChange}
             placeholder="Enter your full name"
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-100 outline-none transition-all"
           />
         </div>
 
@@ -176,7 +176,7 @@ export default function RSVPForm() {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="your@email.com"
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-100 outline-none transition-all"
           />
         </div>
 
@@ -199,7 +199,7 @@ export default function RSVPForm() {
             value={formData.message}
             onChange={handleInputChange}
             placeholder="Share your wishes or any special notes..."
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all resize-none"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-100 outline-none transition-all resize-none"
           />
         </div>
 
@@ -210,7 +210,7 @@ export default function RSVPForm() {
           className={`w-full py-4 rounded-xl font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 ${
             isSubmitting
               ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 shadow-lg hover:shadow-xl'
+              : 'bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-600 hover:to-yellow-600 shadow-lg hover:shadow-xl'
           }`}
         >
           {isSubmitting ? (

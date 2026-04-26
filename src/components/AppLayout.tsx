@@ -351,7 +351,7 @@ export default function AppLayout() {
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 mx-auto rounded-full mb-8" />
             
-            {new Date() < new Date('2026-05-30') ? (
+            {new Date() < new Date(2026, 4, 30) ? (
               <div className="inline-flex flex-col items-center gap-4">
                 <div className="px-6 py-3 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200 font-medium flex items-center gap-2">
                   <Calendar className="w-4 h-4" />

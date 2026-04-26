@@ -6,9 +6,6 @@ interface RSVPFormData {
   guestName: string;
   email: string;
   attending: boolean;
-  numberOfAttendees: number;
-  mealPreference: 'vegetarian' | 'non-vegetarian';
-  dietaryRestrictions: string;
   message: string;
 }
 
@@ -17,9 +14,6 @@ export default function RSVPForm() {
     guestName: '',
     email: '',
     attending: true,
-    numberOfAttendees: 1,
-    mealPreference: 'non-vegetarian',
-    dietaryRestrictions: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +32,6 @@ export default function RSVPForm() {
     setFormData(prev => ({
       ...prev,
       attending,
-      numberOfAttendees: attending ? prev.numberOfAttendees : 0,
     }));
   };
 
@@ -54,9 +47,6 @@ export default function RSVPForm() {
           guest_name: formData.guestName,
           email: formData.email,
           attending: formData.attending,
-          number_of_attendees: formData.attending ? formData.numberOfAttendees : 0,
-          meal_preference: formData.mealPreference,
-          dietary_restrictions: formData.dietaryRestrictions || null,
           message: formData.message || null,
         });
 
@@ -97,13 +87,10 @@ export default function RSVPForm() {
               guestName: '',
               email: '',
               attending: true,
-              numberOfAttendees: 1,
-              mealPreference: 'non-vegetarian',
-              dietaryRestrictions: '',
               message: '',
             });
           }}
-          className="mt-6 px-6 py-2 text-rose-500 hover:text-rose-600 font-medium transition-colors"
+          className="mt-6 px-6 py-2 text-amber-500 hover:text-amber-600 font-medium transition-colors"
         >
           Submit Another RSVP
         </button>
@@ -134,7 +121,7 @@ export default function RSVPForm() {
             onClick={() => handleAttendingChange(true)}
             className={`p-4 rounded-xl border-2 transition-all ${
               formData.attending
-                ? 'border-rose-500 bg-rose-50 text-rose-700'
+                ? 'border-amber-500 bg-amber-50 text-amber-700'
                 : 'border-gray-200 hover:border-gray-300 text-gray-600'
             }`}
           >
@@ -171,7 +158,7 @@ export default function RSVPForm() {
             value={formData.guestName}
             onChange={handleInputChange}
             placeholder="Enter your full name"
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none transition-all"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
           />
         </div>
 
@@ -189,80 +176,13 @@ export default function RSVPForm() {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="your@email.com"
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none transition-all"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
           />
         </div>
 
         {formData.attending && (
           <>
-            {/* Number of Attendees */}
-            <div>
-              <label htmlFor="numberOfAttendees" className="block text-sm font-medium text-gray-700 mb-2">
-                <Users className="w-4 h-4 inline mr-2" />
-                Number of Guests (including yourself) *
-              </label>
-              <select
-                id="numberOfAttendees"
-                name="numberOfAttendees"
-                value={formData.numberOfAttendees}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none transition-all bg-white"
-              >
-                {[1, 2, 3, 4, 5].map(num => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'Guest' : 'Guests'}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            {/* Meal Preference */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Utensils className="w-4 h-4 inline mr-2" />
-                Meal Preference *
-              </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, mealPreference: 'non-vegetarian' }))}
-                  className={`p-4 rounded-xl border-2 transition-all ${
-                    formData.mealPreference === 'non-vegetarian'
-                      ? 'border-rose-500 bg-rose-50 text-rose-700'
-                      : 'border-gray-200 hover:border-gray-300 text-gray-600'
-                  }`}
-                >
-                  <span className="block font-medium">Non-Vegetarian</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, mealPreference: 'vegetarian' }))}
-                  className={`p-4 rounded-xl border-2 transition-all ${
-                    formData.mealPreference === 'vegetarian'
-                      ? 'border-green-500 bg-green-50 text-green-700'
-                      : 'border-gray-200 hover:border-gray-300 text-gray-600'
-                  }`}
-                >
-                  <span className="block font-medium">Vegetarian</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Dietary Restrictions */}
-            <div>
-              <label htmlFor="dietaryRestrictions" className="block text-sm font-medium text-gray-700 mb-2">
-                Dietary Restrictions / Allergies
-              </label>
-              <input
-                type="text"
-                id="dietaryRestrictions"
-                name="dietaryRestrictions"
-                value={formData.dietaryRestrictions}
-                onChange={handleInputChange}
-                placeholder="e.g., Gluten-free, Nut allergy, etc."
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none transition-all"
-              />
-            </div>
           </>
         )}
 
@@ -279,7 +199,7 @@ export default function RSVPForm() {
             value={formData.message}
             onChange={handleInputChange}
             placeholder="Share your wishes or any special notes..."
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none transition-all resize-none"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all resize-none"
           />
         </div>
 
@@ -290,7 +210,7 @@ export default function RSVPForm() {
           className={`w-full py-4 rounded-xl font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 ${
             isSubmitting
               ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 shadow-lg hover:shadow-xl'
+              : 'bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 shadow-lg hover:shadow-xl'
           }`}
         >
           {isSubmitting ? (
@@ -309,3 +229,4 @@ export default function RSVPForm() {
     </form>
   );
 }
+

@@ -152,7 +152,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
           value={uploaderName}
           onChange={(e) => setUploaderName(e.target.value)}
           placeholder="Enter your name"
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none transition-all"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
         />
       </div>
 
@@ -163,8 +163,8 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
         onDrop={handleDrop}
         className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
           isDragging
-            ? 'border-rose-400 bg-rose-50'
-            : 'border-gray-200 hover:border-rose-300 hover:bg-rose-50/50'
+            ? 'border-amber-400 bg-amber-50'
+            : 'border-gray-200 hover:border-amber-300 hover:bg-amber-50/50'
         }`}
       >
         <input
@@ -176,9 +176,9 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
         />
         <div className="flex flex-col items-center">
           <div className={`p-4 rounded-full mb-4 transition-colors ${
-            isDragging ? 'bg-rose-100' : 'bg-gray-100'
+            isDragging ? 'bg-amber-100' : 'bg-gray-100'
           }`}>
-            <Upload className={`w-8 h-8 ${isDragging ? 'text-rose-500' : 'text-gray-400'}`} />
+            <Upload className={`w-8 h-8 ${isDragging ? 'text-amber-500' : 'text-gray-400'}`} />
           </div>
           <p className="text-lg font-medium text-gray-700 mb-1">
             {isDragging ? 'Drop your photos here' : 'Drag & drop photos here'}
@@ -197,7 +197,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
             </h4>
             <button
               onClick={() => setFiles([])}
-              className="text-sm text-gray-500 hover:text-rose-500 transition-colors"
+              className="text-sm text-gray-500 hover:text-amber-500 transition-colors"
             >
               Clear all
             </button>
@@ -251,7 +251,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
             className={`w-full mt-6 py-4 rounded-xl font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 ${
               isUploading || files.every(f => f.status === 'success')
                 ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 shadow-lg hover:shadow-xl'
+                : 'bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 shadow-lg hover:shadow-xl'
             }`}
           >
             {isUploading ? (
@@ -276,3 +276,4 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
     </div>
   );
 }
+

@@ -18,6 +18,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Serif font for headings */
@@ -36,12 +37,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #f9a8d4;
+  background: #fde68a;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #f472b6;
+  background: #facc15;
 }
 
 /* Smooth scrolling */
@@ -70,12 +71,9 @@ html {
   }
 }
 
-@keyframes pulse-soft {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -85,10 +83,11 @@ html {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+  will-change: transform;
 }
 
-.animate-pulse-soft {
-  animation: pulse-soft 2s ease-in-out infinite;
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 /* Hide scrollbar for thumbnail container */
@@ -103,23 +102,22 @@ html {
 
 /* Image hover effects */
 .image-hover {
-  transition: transform 0.5s ease, filter 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .image-hover:hover {
   transform: scale(1.05);
+  will-change: transform;
 }
 
-/* Glass effect */
+/* Glass effect - Simplified for performance */
 .glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -133,29 +131,29 @@ html {
 .card-hover:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  will-change: transform;
 }
 
-/* Loading spinner */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+/* Performance optimizations */
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
 }
 
-.animate-spin {
-  animation: spin 1s linear infinite;
+img {
+  content-visibility: auto;
 }
 
 /* Focus styles */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-  outline: 2px solid #f472b6;
+  outline: 2px solid #fbbf24;
   outline-offset: 2px;
 }
 
 /* Selection color */
 ::selection {
-  background-color: #fce7f3;
-  color: #be185d;
+  background-color: #fef3c7;
+  color: #92400e;
 }

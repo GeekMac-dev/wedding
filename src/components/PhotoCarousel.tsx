@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, X, Download, Maximize2 } from 'lucide-react';
+import ImageWithLoading from './ImageWithLoading';
 
 interface Photo {
   id: string;
@@ -12,6 +13,8 @@ interface PhotoCarouselProps {
   autoPlay?: boolean;
   interval?: number;
 }
+
+
 
 export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000 }: PhotoCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -59,8 +62,8 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
 
   if (photos.length === 0) {
     return (
-      <div className="flex items-center justify-center h-96 bg-rose-50 rounded-2xl">
-        <p className="text-rose-400 text-lg">No photos yet</p>
+      <div className="flex items-center justify-center h-96 bg-amber-50 rounded-2xl">
+        <p className="text-amber-400 text-lg">No photos yet</p>
       </div>
     );
   }
@@ -81,7 +84,7 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
                 index === currentIndex ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              <img
+              <ImageWithLoading
                 src={photo.url}
                 alt={photo.caption || `Photo ${index + 1}`}
                 className="w-full h-full object-cover"
@@ -148,11 +151,11 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
               onClick={() => goToSlide(index)}
               className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden transition-all duration-300 ${
                 index === currentIndex
-                  ? 'ring-2 ring-rose-500 ring-offset-2 scale-105'
+                  ? 'ring-2 ring-amber-500 ring-offset-2 scale-105'
                   : 'opacity-60 hover:opacity-100'
               }`}
             >
-              <img
+              <ImageWithLoading
                 src={photo.url}
                 alt={`Thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
@@ -195,7 +198,7 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
             <ChevronLeft className="w-8 h-8" />
           </button>
           
-          <img
+          <ImageWithLoading
             src={photos[currentIndex].url}
             alt={photos[currentIndex].caption || `Photo ${currentIndex + 1}`}
             className="max-w-full max-h-full object-contain"
@@ -222,3 +225,4 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
     </>
   );
 }
+

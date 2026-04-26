@@ -7,9 +7,6 @@ interface RSVP {
   guest_name: string;
   email: string;
   attending: boolean;
-  number_of_attendees: number;
-  meal_preference: string;
-  dietary_restrictions: string | null;
   message: string | null;
   created_at: string;
 }
@@ -58,20 +55,14 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
     total: rsvps.length,
     attending: rsvps.filter(r => r.attending).length,
     notAttending: rsvps.filter(r => !r.attending).length,
-    totalGuests: rsvps.reduce((sum, r) => sum + (r.attending ? r.number_of_attendees : 0), 0),
-    vegetarian: rsvps.filter(r => r.attending && r.meal_preference === 'vegetarian').reduce((sum, r) => sum + r.number_of_attendees, 0),
-    nonVegetarian: rsvps.filter(r => r.attending && r.meal_preference === 'non-vegetarian').reduce((sum, r) => sum + r.number_of_attendees, 0),
   };
 
   const exportToCSV = () => {
-    const headers = ['Name', 'Email', 'Attending', 'Guests', 'Meal Preference', 'Dietary Restrictions', 'Message', 'Date'];
+    const headers = ['Name', 'Email', 'Attending', 'Message', 'Date'];
     const rows = rsvps.map(r => [
       r.guest_name,
       r.email,
       r.attending ? 'Yes' : 'No',
-      r.number_of_attendees.toString(),
-      r.meal_preference,
-      r.dietary_restrictions || '',
       r.message || '',
       new Date(r.created_at).toLocaleDateString(),
     ]);
@@ -93,7 +84,7 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
       <div className="min-h-screen py-8 px-4">
         <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-rose-500 to-pink-500 p-6 text-white">
+          <div className="bg-gradient-to-r from-amber-500 to-yellow-500 p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-serif mb-1">RSVP Management</h2>
@@ -109,8 +100,8 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 border-b">
-            <div className="bg-white rounded-xl p-4 shadow-sm">
+          <div className="flex flex-wrap gap-4 p-6 bg-gray-50 border-b">
+            <div className="bg-white rounded-xl p-4 shadow-sm flex-1 min-w-[150px]">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-blue-100">
                   <Users className="w-5 h-5 text-blue-600" />
@@ -121,36 +112,25 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm">
+            <div className="bg-white rounded-xl p-4 shadow-sm flex-1 min-w-[150px]">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-green-100">
                   <CheckCircle className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{stats.totalGuests}</p>
-                  <p className="text-xs text-gray-500">Total Guests</p>
+                  <p className="text-2xl font-bold text-gray-800">{stats.attending}</p>
+                  <p className="text-xs text-gray-500">Attending</p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-orange-100">
-                  <Utensils className="w-5 h-5 text-orange-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-800">{stats.vegetarian}</p>
-                  <p className="text-xs text-gray-500">Vegetarian</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm">
+            <div className="bg-white rounded-xl p-4 shadow-sm flex-1 min-w-[150px]">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-red-100">
-                  <Utensils className="w-5 h-5 text-red-600" />
+                  <XCircle className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{stats.nonVegetarian}</p>
-                  <p className="text-xs text-gray-500">Non-Vegetarian</p>
+                  <p className="text-2xl font-bold text-gray-800">{stats.notAttending}</p>
+                  <p className="text-xs text-gray-500">Not Attending</p>
                 </div>
               </div>
             </div>
@@ -167,7 +147,7 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
                   placeholder="Search by name or email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none"
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none"
                 />
               </div>
 
@@ -179,7 +159,7 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
                     onClick={() => setFilterAttending(filter)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       filterAttending === filter
-                        ? 'bg-rose-500 text-white'
+                        ? 'bg-amber-500 text-white'
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
@@ -199,7 +179,7 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
               </button>
               <button
                 onClick={exportToCSV}
-                className="px-4 py-2 rounded-lg bg-rose-500 text-white hover:bg-rose-600 transition-colors flex items-center gap-2"
+                className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 Export CSV
@@ -211,7 +191,7 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
           <div className="p-6 max-h-[500px] overflow-y-auto">
             {isLoading ? (
               <div className="text-center py-12">
-                <RefreshCw className="w-8 h-8 text-rose-400 animate-spin mx-auto mb-4" />
+                <RefreshCw className="w-8 h-8 text-amber-400 animate-spin mx-auto mb-4" />
                 <p className="text-gray-500">Loading RSVPs...</p>
               </div>
             ) : filteredRsvps.length === 0 ? (
@@ -253,23 +233,9 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
 
                       <div className="flex flex-wrap gap-2 md:gap-4 text-sm">
                         {rsvp.attending && (
-                          <>
-                            <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700">
-                              {rsvp.number_of_attendees} guest{rsvp.number_of_attendees !== 1 ? 's' : ''}
-                            </span>
-                            <span className={`px-3 py-1 rounded-full ${
-                              rsvp.meal_preference === 'vegetarian'
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-orange-100 text-orange-700'
-                            }`}>
-                              {rsvp.meal_preference}
-                            </span>
-                            {rsvp.dietary_restrictions && (
-                              <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
-                                {rsvp.dietary_restrictions}
-                              </span>
-                            )}
-                          </>
+                          <span className="px-3 py-1 rounded-full bg-green-100 text-green-700">
+                            Confirmed Attending
+                          </span>
                         )}
                         <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-600 flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
@@ -288,7 +254,6 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
             <div className="flex flex-wrap gap-6 justify-center text-sm text-gray-600">
               <span><strong>{stats.attending}</strong> attending</span>
               <span><strong>{stats.notAttending}</strong> not attending</span>
-              <span><strong>{stats.totalGuests}</strong> total guests expected</span>
             </div>
           </div>
         </div>
@@ -296,3 +261,4 @@ export default function RSVPAdmin({ onClose }: RSVPAdminProps) {
     </div>
   );
 }
+

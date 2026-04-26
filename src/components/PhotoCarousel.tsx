@@ -21,6 +21,14 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  const [orientations, setOrientations] = useState<Record<string, 'landscape' | 'portrait'>>({});
+
+  const handleImageLoad = (id: string, e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    const orientation = img.naturalWidth >= img.naturalHeight ? 'landscape' : 'portrait';
+    setOrientations(prev => ({ ...prev, [id]: orientation }));
+  };
+
   useEffect(() => {
     if (!autoPlay || isPaused || photos.length <= 1) return;
     
@@ -87,7 +95,10 @@ export default function PhotoCarousel({ photos, autoPlay = true, interval = 5000
               <ImageWithLoading
                 src={photo.url}
                 alt={photo.caption || `Photo ${index + 1}`}
-                className="w-full h-full object-cover"
+                onLoad={(e) => handleImageLoad(photo.id, e)}
+                className={`w-full h-full ${
+                  orientations[photo.id] === 'portrait' ? 'object-contain' : 'object-cover'
+                }`}
               />
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />

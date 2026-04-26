@@ -15,19 +15,28 @@ import EnvelopeSplash from './EnvelopeSplash';
 
 // Prenup photos data
 const prenupPhotos = [
-  { id: '1', url: '/images/prenup/JCM_1391.jpg', caption: 'The beginning of forever' },
-  { id: '2', url: '/images/prenup/JCM_1504.jpg', caption: 'Love in every glance' },
-  { id: '3', url: '/images/prenup/JCM_1670.jpg', caption: 'Two hearts, one love' },
+  { id: '1', url: '/images/prenup/JCM_1670.jpg', caption: 'Two hearts, one love' },
+  { id: '2', url: '/images/prenup/JCM_1391.jpg', caption: 'The beginning of forever' },
+  { id: '3', url: '/images/prenup/JCM_1504.jpg', caption: 'Love in every glance' },
   { id: '4', url: '/images/prenup/JCM_1808.jpg', caption: 'Together is our favorite place' },
   { id: '5', url: '/images/prenup/JCM_2125.jpg', caption: 'Written in the stars' },
   { id: '6', url: '/images/prenup/JCM_2127.jpg', caption: 'A love story for the ages' },
   { id: '7', url: '/images/prenup/JCM_2178.jpg', caption: 'Forever starts now' },
   { id: '8', url: '/images/prenup/JCM_2249.jpg', caption: 'My heart found its home' },
   { id: '9', url: '/images/prenup/JCM_2258.jpg', caption: 'Love beyond words' },
-  { id: '10', url: '/images/prenup/JCM_2467.jpg', caption: 'Our beautiful journey' },
-  { id: '11', url: '/images/prenup/JCM_2504.jpg', caption: 'Endless love' },
-  { id: '12', url: '/images/prenup/JCM_2508.jpg', caption: 'Soulmates forever' },
-  { id: '13', url: '/images/prenup/JCM_2600.jpg', caption: 'Our happily ever after' },
+  { id: '10', url: '/images/prenup/JCM_2504.jpg', caption: 'Endless love' },
+  { id: '11', url: '/images/prenup/JCM_2508.jpg', caption: 'Soulmates forever' },
+  { id: '12', url: '/images/prenup/JCM_2600.jpg', caption: 'Our happily ever after' },
+  { id: '13', url: '/images/prenup/JCM_1648.jpg', caption: 'Finding peace in your arms' },
+  { id: '14', url: '/images/prenup/JCM_1732.jpg', caption: 'Hand in hand towards our future' },
+  { id: '15', url: '/images/prenup/JCM_1821.jpg', caption: 'With you, life is beautiful' },
+  { id: '16', url: '/images/prenup/JCM_1916.jpg', caption: 'Every moment with you is a treasure' },
+  { id: '17', url: '/images/prenup/JCM_1918.jpg', caption: 'Laughter is the melody of our love' },
+  { id: '18', url: '/images/prenup/JCM_2048.jpg', caption: 'In each other, we found world' },
+  { id: '19', url: '/images/prenup/JCM_2096.jpg', caption: 'Your smile is my favorite view' },
+  { id: '20', url: '/images/prenup/JCM_2183.jpg', caption: 'A lifetime of adventures awaits' },
+  { id: '21', url: '/images/prenup/JCM_2239.jpg', caption: 'Best friends turned soulmates' },
+  { id: '22', url: '/images/prenup/JCM_2452.jpg', caption: 'Wrapped in your love' },
 ];
 
 interface GuestPhoto {
@@ -342,13 +351,23 @@ export default function AppLayout() {
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 mx-auto rounded-full mb-8" />
             
-            <button
-              onClick={() => setShowUploadModal(true)}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-500 text-white font-medium hover:from-yellow-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl"
-            >
-              <Camera className="w-5 h-5" />
-              Upload Your Photos
-            </button>
+            {new Date() < new Date('2026-05-30') ? (
+              <div className="inline-flex flex-col items-center gap-4">
+                <div className="px-6 py-3 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200 font-medium flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Upload will be available on May 30, 2026
+                </div>
+                <p className="text-xs text-gray-400">Can't wait to see your photos from our big day!</p>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowUploadModal(true)}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-500 text-white font-medium hover:from-yellow-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl"
+              >
+                <Camera className="w-5 h-5" />
+                Upload Your Photos
+              </button>
+            )}
           </div>
 
           <PhotoGallery 
@@ -392,9 +411,9 @@ export default function AppLayout() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 items-stretch">
             {/* Ceremony Card */}
-            <div className="relative bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-xl p-10 border border-yellow-100 overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+            <div className="relative flex flex-col h-full bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-xl p-10 border border-yellow-100 overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
               <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-100/50 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
               <div className="w-16 h-16 rounded-2xl bg-yellow-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-200 transition-colors">
                 <svg className="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -402,40 +421,69 @@ export default function AppLayout() {
                 </svg>
               </div>
               <h3 className="font-serif text-2xl text-gray-800 text-center mb-6">The Ceremony</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-4 h-4 text-yellow-600" />
+              <div className="flex-1 flex flex-col">
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                      <Calendar className="w-4 h-4 text-yellow-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">Date</p>
+                      <p className="font-medium text-gray-700">May 30, 2026</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Date</p>
-                    <p className="font-medium text-gray-700">May 30, 2026</p>
+                  <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-4 h-4 text-yellow-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">Time</p>
+                      <p className="font-medium text-gray-700">8:30 AM</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-4 h-4 text-yellow-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">Venue</p>
+                      <p className="font-medium text-gray-700">St. Francis Xavier Parish - Archdiocese of Lipa</p>
+                      <p className="text-sm text-gray-400">Nasugbu, Batangas</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-4 h-4 text-yellow-600" />
+                
+                {/* Clickable Map Link */}
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=St.+Francis+Xavier+Parish+-+Archdiocese+of+Lipa+Nasugbu+Batangas"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto block relative rounded-2xl overflow-hidden border border-yellow-100 shadow-lg group/map transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <div className="h-48 bg-yellow-50/50">
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3864.57723964923!2d120.63002127592476!3d14.074720986348604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd77b789181185%3A0x67503927622998a1!2sSt.%20Francis%20Xavier%20Parish!5e0!3m2!1sen!2sph!4v1714135400000!5m2!1sen!2sph" 
+                      width="100%" 
+                      height="100%" 
+                      style={{ border: 0, pointerEvents: 'none' }} 
+                      allowFullScreen={true} 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Time</p>
-                    <p className="font-medium text-gray-700">8:30 AM</p>
+                  {/* Overlay for interaction hint */}
+                  <div className="absolute inset-0 bg-yellow-900/0 group-hover/map:bg-yellow-900/10 transition-colors flex items-end justify-center pb-8">
+                    <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-xl opacity-0 group-hover/map:opacity-100 transition-all transform translate-y-2 group-hover/map:translate-y-0 text-yellow-700 text-xs font-bold flex items-center gap-2">
+                       <MapPin className="w-3.5 h-3.5" />
+                       View on Google Maps
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-4 h-4 text-yellow-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Venue</p>
-                    <p className="font-medium text-gray-700">St. Francis Xavier Parish</p>
-                    <p className="text-sm text-gray-400">Nasugbu, Batangas</p>
-                  </div>
-                </div>
+                </a>
               </div>
             </div>
 
             {/* Reception Card */}
-            <div className="relative bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-xl p-10 border border-yellow-100 overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+            <div className="relative flex flex-col h-full bg-gradient-to-br from-yellow-50 to-white rounded-3xl shadow-xl p-10 border border-yellow-100 overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
               <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-100/50 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
               <div className="w-16 h-16 rounded-2xl bg-yellow-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-200 transition-colors">
                 <svg className="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -443,26 +491,55 @@ export default function AppLayout() {
                 </svg>
               </div>
               <h3 className="font-serif text-2xl text-gray-800 text-center mb-6">The Reception</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-4 h-4 text-yellow-600" />
+              <div className="flex-1 flex flex-col">
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                      <Calendar className="w-4 h-4 text-yellow-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">Date</p>
+                      <p className="font-medium text-gray-700">May 30, 2026</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Date</p>
-                    <p className="font-medium text-gray-700">May 30, 2026</p>
+                  <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-4 h-4 text-yellow-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">Venue</p>
+                      <p className="font-medium text-gray-700">Brides Residence</p>
+                      <p className="text-sm text-gray-400">El Paso, Brgy. Lumbangan, Nasugbu, Batangas</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 bg-white rounded-xl p-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-4 h-4 text-yellow-600" />
+
+                {/* Clickable Map Link for Reception */}
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=14.045241,120.648405"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto block relative rounded-2xl overflow-hidden border border-yellow-100 shadow-lg group/map transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <div className="h-48 bg-yellow-50/50">
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3865.111816!2d120.648405!3d14.045241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTTCsDAyJzQyLjkiTiAxMjDCsDM4JzU0LjMiRQ!5e0!3m2!1sen!2sph!4v1714136000000!5m2!1sen!2sph" 
+                      width="100%" 
+                      height="100%" 
+                      style={{ border: 0, pointerEvents: 'none' }} 
+                      allowFullScreen={true} 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Venue</p>
-                    <p className="font-medium text-gray-700">Brides Residence</p>
-                    <p className="text-sm text-gray-400">El Paso, Brgy. Lumbangan, Nasugbu, Batangas</p>
+                  {/* Overlay for interaction hint */}
+                  <div className="absolute inset-0 bg-yellow-900/0 group-hover/map:bg-yellow-900/10 transition-colors flex items-end justify-center pb-8">
+                    <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-xl opacity-0 group-hover/map:opacity-100 transition-all transform translate-y-2 group-hover/map:translate-y-0 text-yellow-700 text-xs font-bold flex items-center gap-2">
+                       <MapPin className="w-3.5 h-3.5" />
+                       View on Google Maps
+                    </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
@@ -484,8 +561,11 @@ export default function AppLayout() {
               <Heart className="w-7 h-7 text-yellow-400 fill-yellow-400/40" />
             </div>
 
-            <h3 className="font-serif text-4xl mb-1 text-white">April Jean</h3>
-            <p className="font-serif text-2xl text-yellow-400 italic mb-1">&amp; Macdenver</p>
+            <h3 className="font-serif text-4xl text-white">
+              April Jean
+              <span className="block text-yellow-300 text-2xl font-light italic my-2">&amp;</span>
+              Macdenver
+            </h3>
             <p className="text-gray-400 text-sm tracking-widest uppercase mb-10">May 30, 2026 · Nasugbu, Batangas</p>
 
             <div className="flex flex-wrap items-center justify-center gap-1 mb-10">

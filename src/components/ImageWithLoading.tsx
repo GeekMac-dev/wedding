@@ -11,6 +11,8 @@ export default function ImageWithLoading({
   className, 
   containerClassName = "",
   priority = false,
+  onLoad,
+  onError,
   ...props 
 }: ImageWithLoadingProps) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -28,7 +30,7 @@ export default function ImageWithLoading({
           observer.disconnect();
         }
       },
-      { rootMargin: '600px' } // Load significantly earlier to prevent flickering
+      { rootMargin: '600px' }
     );
 
     if (imgRef.current) {
@@ -55,10 +57,14 @@ export default function ImageWithLoading({
           alt={alt}
           className={`${className} transition-opacity duration-700 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ willChange: 'opacity' }}
-          onLoad={() => setIsLoaded(true)}
-          onError={() => {
+          onLoad={(e) => {
+            setIsLoaded(true);
+            if (onLoad) (onLoad as any)(e);
+          }}
+          onError={(e) => {
             setIsLoaded(true);
             setError(true);
+            if (onError) (onError as any)(e);
           }}
           decoding="async"
           {...props}

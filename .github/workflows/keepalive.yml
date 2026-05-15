@@ -1,0 +1,36 @@
+name: Supabase keepalive
+
+on:
+  schedule:
+    - cron: '0 8 */3 * *'   # every 3 days at 8:00 UTC
+  workflow_dispatch:         # allow manual trigger too
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Insert ping
+        id: insert
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=representation" \
+            -d '{"pinged_at": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'"}')
+          echo "status=$RESPONSE" >> $GITHUB_OUTPUT
+
+      - name: Delete old pings (keep last 5)
+        run: |
+          curl -s -X DELETE \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive?id=lt.$(curl -s \
+              "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive?select=id&order=id.desc&limit=1&offset=4" \
+              -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+              -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" | \
+              grep -o '"id":[0-9]*' | head -1 | grep -o '[0-9]*')" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+
+      - name: Done
+        run: echo "Keepalive ping sent. HTTP ${{ steps.insert.outputs.status }}"

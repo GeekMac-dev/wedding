@@ -22,11 +22,12 @@ jobs:
 
       - name: Delete old pings (keep last 5)
         run: |
-          CUTOFF_ID=$(curl -s \
+          RESPONSE=$(curl -s \
             "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive?select=id&order=id.desc&limit=1&offset=4" \
             -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" | \
-            grep -o '"id":[0-9]*' | head -1 | grep -o '[0-9]*')
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}")
+          
+          CUTOFF_ID=$(echo "$RESPONSE" | jq -r '.[0].id // empty' 2>/dev/null)
 
           if [ -n "$CUTOFF_ID" ]; then
             curl -s -X DELETE \

@@ -12,8 +12,8 @@ jobs:
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
             -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive" \
-            -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Content-Type: application/json" \
             -H "Prefer: return=representation" \
             -d '{"pinged_at": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'"}')
@@ -23,8 +23,8 @@ jobs:
         run: |
           RESPONSE=$(curl -s \
             "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive?select=id&order=id.desc&limit=1&offset=4" \
-            -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}")
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
 
           echo "Supabase response: $RESPONSE"
 
@@ -33,8 +33,8 @@ jobs:
           if [ -n "$CUTOFF_ID" ]; then
             curl -s -X DELETE \
               "${{ secrets.SUPABASE_URL }}/rest/v1/keepalive?id=lt.$CUTOFF_ID" \
-              -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
-              -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+              -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+              -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
             echo "Deleted pings older than id $CUTOFF_ID"
           else
             echo "Fewer than 5 pings exist, nothing to delete."

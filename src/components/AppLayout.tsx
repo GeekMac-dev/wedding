@@ -10,6 +10,7 @@ import RSVPAdmin from './RSVPAdmin';
 import AdminLogin from './AdminLogin';
 import ImageWithLoading from './ImageWithLoading';
 import EnvelopeSplash from './EnvelopeSplash';
+import { getWeddingPhotoUrls } from '@/lib/storageImages';
 
 
 
@@ -42,6 +43,9 @@ const prenupPhotos = [
 interface GuestPhoto {
   id: string;
   url: string;
+  displayUrl?: string;
+  thumbnailUrl?: string;
+  originalUrl?: string;
   caption?: string;
   uploadedBy?: string;
   createdAt?: string;
@@ -72,17 +76,25 @@ export default function AppLayout() {
   const fetchGuestPhotos = async () => {
     const { data, error } = await supabase
       .from('wedding_photos')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .select('id, file_path, file_url, caption, uploaded_by, created_at')
+      .order('created_at', { ascending: false })
+      .limit(60);
 
     if (!error && data) {
-      setGuestPhotos(data.map(photo => ({
-        id: photo.id,
-        url: photo.file_url,
-        caption: photo.caption,
-        uploadedBy: photo.uploaded_by,
-        createdAt: photo.created_at,
-      })));
+      setGuestPhotos(data.map(photo => {
+        const urls = getWeddingPhotoUrls(photo.file_path, photo.file_url);
+
+        return {
+          id: photo.id,
+          url: urls.display,
+          displayUrl: urls.display,
+          thumbnailUrl: urls.thumbnail,
+          originalUrl: urls.original,
+          caption: photo.caption,
+          uploadedBy: photo.uploaded_by,
+          createdAt: photo.created_at,
+        };
+      }));
     }
   };
 

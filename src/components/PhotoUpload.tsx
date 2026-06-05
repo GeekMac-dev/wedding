@@ -1,10 +1,16 @@
 import { useState, useCallback } from 'react';
 import { Upload, X, Image as ImageIcon, CheckCircle, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { compressImageForUpload, createThumbnailForUpload } from '@/lib/imageCompression';
+import { getOptimizedPhotoPaths } from '@/lib/storageImages';
 
 interface PhotoUploadProps {
   onUploadComplete: () => void;
 }
+
+const MAX_FILES_PER_BATCH = 8;
+const MAX_FILE_SIZE_MB = 20;
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 interface UploadFile {
   file: File;
@@ -33,7 +39,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
     e.preventDefault();
     setIsDragging(false);
     const droppedFiles = Array.from(e.dataTransfer.files).filter(file =>
-      file.type.startsWith('image/')
+      ACCEPTED_IMAGE_TYPES.includes(file.type)
     );
     addFiles(droppedFiles);
   }, []);
@@ -41,14 +47,19 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files).filter(file =>
-        file.type.startsWith('image/')
+        ACCEPTED_IMAGE_TYPES.includes(file.type)
       );
       addFiles(selectedFiles);
     }
   };
 
   const addFiles = (newFiles: File[]) => {
-    const uploadFiles: UploadFile[] = newFiles.map(file => ({
+    const remainingSlots = Math.max(0, MAX_FILES_PER_BATCH - files.length);
+    const acceptedFiles = newFiles
+      .filter(file => file.size <= MAX_FILE_SIZE_MB * 1024 * 1024)
+      .slice(0, remainingSlots);
+
+    const uploadFiles: UploadFile[] = acceptedFiles.map(file => ({
       file,
       preview: URL.createObjectURL(file),
       status: 'pending',
@@ -81,17 +92,29 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
       });
 
       try {
-        const file = files[i].file;
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `uploads/${fileName}`;
+        const file = await compressImageForUpload(files[i].file);
+        const thumbnail = await createThumbnailForUpload(files[i].file);
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
+        const { displayPath: filePath, thumbnailPath } = getOptimizedPhotoPaths(fileName);
 
         // Upload to Supabase Storage
         const { error: uploadError } = await supabase.storage
           .from('wedding-photos')
-          .upload(filePath, file);
+          .upload(filePath, file, {
+            cacheControl: '31536000',
+            contentType: file.type,
+          });
 
         if (uploadError) throw uploadError;
+
+        const { error: thumbnailUploadError } = await supabase.storage
+          .from('wedding-photos')
+          .upload(thumbnailPath, thumbnail, {
+            cacheControl: '31536000',
+            contentType: thumbnail.type,
+          });
+
+        if (thumbnailUploadError) throw thumbnailUploadError;
 
         // Get public URL
         const { data: { publicUrl } } = supabase.storage
@@ -102,7 +125,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
         const { error: dbError } = await supabase
           .from('wedding_photos')
           .insert({
-            file_name: file.name,
+            file_name: files[i].file.name,
             file_path: filePath,
             file_url: publicUrl,
             uploaded_by: uploaderName || 'Anonymous Guest',
@@ -170,7 +193,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
         <input
           type="file"
           multiple
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           onChange={handleFileSelect}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
@@ -184,7 +207,7 @@ export default function PhotoUpload({ onUploadComplete }: PhotoUploadProps) {
             {isDragging ? 'Drop your photos here' : 'Drag & drop photos here'}
           </p>
           <p className="text-sm text-gray-500">or click to browse</p>
-          <p className="text-xs text-gray-400 mt-2">Supports: JPG, PNG, GIF, WEBP</p>
+          <p className="text-xs text-gray-400 mt-2">JPG, PNG, or WEBP. Up to {MAX_FILES_PER_BATCH} photos, {MAX_FILE_SIZE_MB}MB each</p>
         </div>
       </div>
 

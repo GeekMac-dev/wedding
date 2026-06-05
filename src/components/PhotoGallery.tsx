@@ -6,6 +6,9 @@ import ImageWithLoading from './ImageWithLoading';
 interface Photo {
   id: string;
   url: string;
+  displayUrl?: string;
+  thumbnailUrl?: string;
+  originalUrl?: string;
   caption?: string;
   uploadedBy?: string;
   createdAt?: string;
@@ -53,7 +56,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
   const handleBulkDownload = async () => {
     const selectedPhotos = photos.filter(p => selectedForDownload.has(p.id));
     for (let i = 0; i < selectedPhotos.length; i++) {
-      await handleDownload(selectedPhotos[i].url, `wedding-photo-${i + 1}.jpg`);
+      await handleDownload(selectedPhotos[i].originalUrl || selectedPhotos[i].url, `wedding-photo-${i + 1}.jpg`);
       await new Promise(resolve => setTimeout(resolve, 500));
     }
   };
@@ -157,7 +160,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
             onClick={() => isSelectionMode ? toggleSelection(photo.id) : setSelectedPhoto(index)}
           >
             <ImageWithLoading
-              src={photo.url}
+              src={photo.thumbnailUrl || photo.url}
               alt={photo.caption || `Photo ${index + 1}`}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
@@ -182,7 +185,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDownload(photo.url, `wedding-photo-${index + 1}.jpg`);
+                  handleDownload(photo.originalUrl || photo.url, `wedding-photo-${index + 1}.jpg`);
                 }}
                 className="absolute top-2 right-2 p-2 rounded-full bg-white/90 text-gray-700 opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:scale-110"
               >
@@ -226,7 +229,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDownload(photos[selectedPhoto].url, `wedding-photo-${selectedPhoto + 1}.jpg`);
+                  handleDownload(photos[selectedPhoto].originalUrl || photos[selectedPhoto].url, `wedding-photo-${selectedPhoto + 1}.jpg`);
                 }}
                 className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-2xl text-white hover:bg-yellow-500 hover:text-black transition-all border border-white/20 shadow-xl"
                 title="Download"
@@ -273,7 +276,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={photos[selectedPhoto].url}
+                src={photos[selectedPhoto].displayUrl || photos[selectedPhoto].url}
                 alt=""
                 className="max-w-full max-h-[60vh] md:max-h-[70vh] object-contain shadow-[0_0_100px_rgba(255,255,255,0.05)] select-none animate-in fade-in zoom-in-95 duration-500 rounded-sm pointer-events-auto"
               />
@@ -317,7 +320,7 @@ export default function PhotoGallery({ photos, title = "Photo Gallery" }: PhotoG
                       : 'border-white/10 opacity-30 hover:opacity-100'
                   }`}
                 >
-                  <img src={p.url} className="w-full h-full object-cover" alt="" />
+                  <img src={p.thumbnailUrl || p.url} className="w-full h-full object-cover" alt="" />
                 </button>
               ))}
             </div>
